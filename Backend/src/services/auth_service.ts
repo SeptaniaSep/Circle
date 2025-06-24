@@ -1,5 +1,6 @@
 import { compare, hash } from "bcrypt"
-import { prisma } from "../configs/prismaClien"
+import { prisma } from "../connections/prismaClien"
+import { signToken, TokenPayload } from "../utils/jwt"
 
 
 
@@ -20,7 +21,7 @@ export async function registerService(data: auth) {
         }
     })
 
-    return { username: user.username, email: user.email}
+    return user
 }
 
 export async function loginService(data: auth) {
@@ -28,8 +29,13 @@ export async function loginService(data: auth) {
         where: { email: data.email }
     })
     if (!user) throw new Error("Email is not registered")
+
         const isValid = await compare(data.password, user.password)
     if (!isValid) throw new Error("Wrong password")
+
+        const payload: TokenPayload = { id: user.id }
+        const token = signToken(payload)
+        return token
 
         
 }

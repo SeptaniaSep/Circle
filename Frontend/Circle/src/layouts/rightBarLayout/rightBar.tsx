@@ -12,6 +12,7 @@ function RightBar() {
    const [users, setUsers] = useState<UserType[]>(initialUser);
 
 
+
   const handleFollowBadge = (index: number) => {
     setUsers((prev) =>
       prev.map((user, i) =>

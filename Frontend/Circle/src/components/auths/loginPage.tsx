@@ -1,34 +1,35 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { schemaAuthLogin, type schemaAuthDTO } from "../schemas/schemaAuthLogin";
+import { schemaAuthLogin,  type schemaAuthLoginDTO } from "../schemas/schemaAuthLogin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useLogin } from "../hooks/useAuthLogin";
+
 
 
 export default function LoginPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const {mutate, isPending} = useLogin()
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<schemaAuthDTO>({
+  } = useForm<schemaAuthLoginDTO>({
     mode: "onChange",
     resolver: zodResolver(schemaAuthLogin),
   });
 
-  const handleClick = (data: schemaAuthDTO) => {
-    const validUsername = "septania";
-    const validPassword = "123456";
 
-    if (data.username === validUsername && data.password === validPassword) {
-      localStorage.setItem("isLoggedIn", "true");
+  // const onSubmit = (data : schemaAuthLoginDTO) => {
+  //   mutate(data)
+  // }
+    const handleLogin = (data: schemaAuthLoginDTO) => {
       navigate("/");
-    } else {
-      alert("Username atau password salah");
-    }
-  };
+      mutate(data)
+      console.log("data", data);
+    };
 
   return (
     <div className="min-h-screen flex mt-10 justify-center text-white">
@@ -36,15 +37,15 @@ export default function LoginPage() {
         <h1 className="text-4xl font-semibold text-green-600 mb-1">circle</h1>
         <h2 className="text-xl font-semibold mb-6">Login to Circle</h2>
 
-        <form onSubmit={handleSubmit(handleClick)} className="space-y-3">
+        <form onSubmit={handleSubmit(handleLogin)} className="space-y-3">
           <Input
             type="text"
-            placeholder="Username*"
-            {...register("username")}
+            placeholder="Email"
+            {...register("email")}
             className="border border-gray-600 text-white"
           />
-          {errors.username && (
-            <p className="text-sm text-red-500">{errors.username.message}</p>
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
 
           <Input
@@ -64,7 +65,7 @@ export default function LoginPage() {
           </div>
 
           <Button
-          onClick={handleSubmit(handleClick)}
+          onClick={handleSubmit(handleLogin)}
             type="submit"
             className="w-full rounded-full bg-green-600 hover:bg-green-700 mt-2"
           >

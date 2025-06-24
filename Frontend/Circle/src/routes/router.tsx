@@ -13,7 +13,7 @@ import { SearchPage } from "@/layouts/middleLayout/search";
 const router = createBrowserRouter([
 
   {
-    path: "/",
+  
     Component: ProtectedRoute,
     children: [
       {
@@ -22,6 +22,7 @@ const router = createBrowserRouter([
         children: 
         [
           { 
+            
             index: true, 
             Component: Home 
           },

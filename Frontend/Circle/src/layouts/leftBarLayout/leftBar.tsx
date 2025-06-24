@@ -6,13 +6,14 @@ import {
   LogOut,
   UserRoundSearchIcon,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CreatePost } from "./createPost";
 import { GoHeart } from "react-icons/go";
+import { useLogout } from "@/components/hooks/useAuthLogout";
 
 export function LeftBar() {
   const [openPostModal, setOpenPostModal] = useState(false);
-  const navigate = useNavigate();
+  const logout = useLogout()
 
   return (
     <div className="w-1/5 text-amber-50 p-2 pl-6 relative h-screen">
@@ -66,10 +67,7 @@ export function LeftBar() {
 
         {/* Tombol Logout */}
         <button
-          onClick={() => {
-            localStorage.removeItem("isLoggedIn");
-            navigate("/login");
-          }}
+          onClick={logout}
           className="flex items-center mb-5 space-x-2 absolute bottom-4 left-3 hover:text-green-800 cursor-pointer"
         >
           <LogOut />
