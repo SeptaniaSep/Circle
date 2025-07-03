@@ -1,16 +1,17 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { schemaAuthLogin,  type schemaAuthLoginDTO } from "../schemas/schemaAuthLogin";
+import {
+  schemaAuthLogin,
+  type schemaAuthLoginDTO,
+} from "../schemas/schemaAuthLogin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useLogin } from "../hooks/useAuthLogin";
 
-
-
 export default function LoginPage() {
-  const navigate = useNavigate()
-  const {mutate, isPending} = useLogin()
+  const navigate = useNavigate();
+  const { mutate} = useLogin();
 
   const {
     register,
@@ -21,15 +22,11 @@ export default function LoginPage() {
     resolver: zodResolver(schemaAuthLogin),
   });
 
-
-  // const onSubmit = (data : schemaAuthLoginDTO) => {
-  //   mutate(data)
-  // }
-    const handleLogin = (data: schemaAuthLoginDTO) => {
-      navigate("/");
-      mutate(data)
-      console.log("data", data);
-    };
+  const handleLogin = (data: schemaAuthLoginDTO) => {
+    navigate("/");
+    mutate(data);
+    console.log("data", data);
+  };
 
   return (
     <div className="min-h-screen flex mt-10 justify-center text-white">
@@ -65,7 +62,7 @@ export default function LoginPage() {
           </div>
 
           <Button
-          onClick={handleSubmit(handleLogin)}
+            onClick={handleSubmit(handleLogin)}
             type="submit"
             className="w-full rounded-full bg-green-600 hover:bg-green-700 mt-2"
           >

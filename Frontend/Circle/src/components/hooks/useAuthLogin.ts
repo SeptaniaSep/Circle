@@ -3,19 +3,20 @@ import axios from "axios";
 import Cookie from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import type { schemaAuthLoginDTO } from "../schemas/schemaAuthLogin";
-import { api } from "@/util/api";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 
+type LoginResponse = {
+  token: string
+}
 
 export function useLogin() {
   const navigate = useNavigate();
+
   const { mutate, isPending } = useMutation({
+
     mutationFn: async (data: schemaAuthLoginDTO) => {
-      // console.log("cek")
-      
-      const res = await api.post<schemaAuthLoginDTO>("/login", data);
-      
-      // console.log("cek 2")
+      const res = await api.post<LoginResponse>("/login", data);
       const token = res.data.token;
       
       return token;
@@ -27,7 +28,7 @@ export function useLogin() {
     },
 
     onError: (error) => {
-      if (axios.isAxiosError(error)) {
+      if (axios.isAxiosErrorr(error)) {
         console.log(error);
         
         const message = error.response?.data.message || "Unknow Error";

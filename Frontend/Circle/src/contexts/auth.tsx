@@ -1,20 +1,20 @@
-import type { schemaAutRegisterhDTO } from "@/components/schemas/schemaAuthRegister";
+import type { schemaAuthRegisterDTO } from "@/components/schemas/schemaAuthRegister";
 import React, { createContext, useState } from "react";
 
 
 interface AuthContextType {
-  user: schemaAutRegisterhDTO;
-  setUser: React.Dispatch<React.SetStateAction<schemaAutRegisterhDTO>>;
+  user: schemaAuthRegisterDTO;
+  setUser: React.Dispatch<React.SetStateAction<schemaAuthRegisterDTO>>;
 }
 export const AuthContext = createContext<AuthContextType>(
   {} as AuthContextType
 );
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<schemaAutRegisterhDTO>({
+  const [user, setUser] = useState<schemaAuthRegisterDTO>({
     username: "no user",
     email: "-",
     password: "-",
-  } as schemaAutRegisterhDTO);
+  } as schemaAuthRegisterDTO);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>

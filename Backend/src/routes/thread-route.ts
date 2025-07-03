@@ -1,10 +1,17 @@
 import { Router } from "express";
-import * as userController from "../controllers/auth-controller";
-import { createThreedController } from "../controllers/thread-controller";
+import { createThreedController, editThreadByIdController, getAllThreadController, getThreadByIdUserController} from "../controllers/thread-controller";
+import { authMiddleware } from "../midlewares/thread-middle";
+import { upload } from "../midlewares/multer";
 
 
 const threadRouter = Router()
 
-threadRouter.post('/thread', createThreedController)
+threadRouter.get('/threads', authMiddleware, getAllThreadController)
+
+threadRouter.get('/threadbi', authMiddleware, getThreadByIdUserController)
+
+threadRouter.post('/thread',  authMiddleware, upload.single("image"), createThreedController)
+
+threadRouter.put('/thread', authMiddleware, editThreadByIdController)
 
 export default threadRouter

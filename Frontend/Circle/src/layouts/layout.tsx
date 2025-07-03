@@ -1,6 +1,6 @@
-import { LeftBar } from "./leftBarLayout/leftBar";
-import RightBar from "./rightBarLayout/rightBar";
 import { Outlet } from "react-router-dom";
+import { LeftBar } from "./leftBar";
+import RightBar from "./rightBar";
 
 export function Layout() {
   return (

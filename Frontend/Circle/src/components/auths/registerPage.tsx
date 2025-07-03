@@ -7,6 +7,8 @@ import {
   type schemaAutRegisterhDTO,
 } from "../schemas/schemaAuthRegister";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { api } from "@/lib/api";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -20,9 +22,17 @@ export default function RegisterPage() {
     resolver: zodResolver(schemaAuthRegister),
   });
 
-  const handleRegister = (data: schemaAutRegisterhDTO) => {
-    navigate("/login");
-    console.log("data", data);
+  const handleRegister = async (data: schemaAutRegisterhDTO) => {
+    try {
+      console.log(data);
+      const res = await api.post("/register", data);
+      toast.success("Register Berhasil");
+      navigate("/login");
+      return res.data;
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Salah .... !";
+      toast.error(message);
+    }
   };
 
   return (

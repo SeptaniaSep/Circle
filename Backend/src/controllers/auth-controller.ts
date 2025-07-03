@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { loginSchema, registerSchema } from "../validation/auth-validation";
-import { loginService, registerService } from "../services/auth_service";
+import { GetProfile, loginService, registerService } from "../services/auth_service";
 
 
 // ==== Register ==== //
@@ -21,6 +21,30 @@ export async function registerController(
 }
 
 
+// GET /profile
+export async function getProfileController(req: Request, res: Response) {
+  try {
+    const userId = (req as any).user?.id;
+
+    if (!userId) {
+       res.status(401).json({ message: "Unauthorized" });
+       return
+    }
+
+    const profile = await GetProfile(userId); // ambil dari prisma
+     res.status(200).json({
+      message: "Data Profile",
+      data: profile,
+    });
+    return
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+
+
 // ==== Login ==== //
 export async function loginController(
     req: Request,
@@ -33,6 +57,7 @@ export async function loginController(
         const token = await loginService(req.body)
         res.status(200).json({message: "login berhasil", token})
     } catch (error: any) {
+        console.error("Login error:", error)
         next(error)
     }
 }
